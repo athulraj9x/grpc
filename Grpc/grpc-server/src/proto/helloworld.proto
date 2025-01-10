@@ -1,0 +1,17 @@
+// grpc-server-1/proto/helloworld.proto
+
+syntax = "proto3";
+
+package hello_proto;
+
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloResponse);
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloResponse {
+  string message = 1;
+}
