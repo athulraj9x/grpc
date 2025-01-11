@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package user_details_proto;
+
+service UserRPCService {
+  rpc UserData (EmptyRequest) returns (UserDataResponse);
+  rpc UserProfile (EmptyRequest) returns (UserProfileResponse);
+  rpc UserOrders (EmptyRequest) returns (UserOrdersResponse);
+}
+
+message EmptyRequest {}
+
+message UserDataResponse {
+  string _id = 1;
+  string name = 2;
+  string username = 3;
+  string email = 4;
+  string password = 5;
+  string passwordText = 6;
+  string emailVerify = 7;
+}
+
+message UserProfileResponse {
+  string _id = 1;
+  string name = 2;
+  string username = 3;
+  string email = 4;
+  string password = 5;
+  string passwordText = 6;
+  string emailVerify = 7;
+  string twoFactorAuthPassword = 8;
+  string status = 9;
+  bool betAllow = 10;
+  repeated string sportsBetting = 11;
+  repeated string casinoBetting = 12;
+  repeated string exposure = 13;
+  repeated string resultTransaction = 14;
+  int32 commission = 15;
+  bool layersBetAllow = 16;
+}
+
+message UserOrdersResponse {
+  repeated Order orders = 1;
+
+  message Order {
+    string parent_id = 1;
+    int32 role = 2;
+    string _id = 3;
+  }
+}

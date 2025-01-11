@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package chat_bidireactional;
+
+service ChatService {
+  rpc ChatRPC (stream chatRequest) returns (stream chatResponse);
+}
+
+message chatRequest {
+  string sender = 1;
+  string content = 2;
+}
+
+message chatResponse {
+  string sender = 1;
+  string content = 2;
+}
