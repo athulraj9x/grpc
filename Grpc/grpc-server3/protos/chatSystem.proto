@@ -5,10 +5,7 @@ package chat_system_proto;
 service ChatService {
   rpc SendMessage (MessageRequest) returns (MessageResponse);
   rpc GetChatHistory (ChatHistoryRequest) returns (ChatHistoryResponse);
-  rpc LiveChat (ChatHistoryRequest) returns (ChatHistoryResponse);
-  rpc SendDataToServer (DataRequest) returns (DataResponse);
-  rpc SendDataUserData (DataRequest) returns (DataResponse);
-  rpc SendDataUserProfile (DataRequest) returns (DataResponse);
+  rpc LiveChat (ChatLiveRequest) returns (ChatLiveResponse);
 }
 
 message MessageRequest {
@@ -30,19 +27,11 @@ message ChatHistoryResponse {
   repeated string messages = 1;
 }
 
-message LiveChatRequest {
+message ChatLiveRequest {
   string userId = 1;
   string message = 2;
 }
 
-message LiveChatResponse {
+message ChatLiveResponse {
   repeated string messages = 1;
-}
-
-message DataRequest {
-    repeated string data = 1;
-}
-
-message DataResponse {
-    string message = 1;
 }

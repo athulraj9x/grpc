@@ -34,18 +34,27 @@ console.log('================================================ ');
 const PORT = '0.0.0.0:50052';
 const server = new grpc.Server();
 
-server.addService(userServices.UserRPCService.service, {
-  userData,
-  userProfile,
-  userOrders,
-});
+// server.addService(userServices.UserRPCService.service, {
+//   userData,
+//   userProfile,
+//   userOrders,
+// });
 
-server.addService(ChatServiceDefinition.ChatService.service, {
-  SendMessage,
-  GetChatHistory,
-  LiveChat,
-});
+// server.addService(ChatServiceDefinition.ChatService.service, {
+//   SendMessage,
+//   GetChatHistory,
+//   LiveChat,
+// });
 
+
+
+
+
+
+
+
+
+// SERVER LISTENING SERVER 2
 server.bindAsync(
   PORT,
   grpc.ServerCredentials.createInsecure(),

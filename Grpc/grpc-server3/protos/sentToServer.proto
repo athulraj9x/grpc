@@ -1,0 +1,17 @@
+syntax = 'proto3';
+
+package server_to_server;
+
+service DataServiceToAnother {
+    rpc SendDataToServer (DataRequest) returns (DataResponse);
+    rpc SendDataUserData (DataRequest) returns (DataResponse);
+    rpc SendDataUserProfile (DataRequest) returns (DataResponse);
+}
+
+message DataRequest {
+    repeated string data = 1;
+}
+
+message DataResponse {
+    string message = 1;
+}
