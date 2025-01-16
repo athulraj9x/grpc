@@ -1,5 +1,5 @@
 const { GRPC_Global } = require("./config/grpc.config");
-const { chatProto } = require("./services/chat.service");
+const { chatProto , QueueProto} = require("./services/chat.service");
 
 const PORT = "0.0.0.0:50051";
 const server = new GRPC_Global.Server();
@@ -43,6 +43,17 @@ server.addService(chatProto.ChatService.service, {
     });
   },
 });
+
+const client = new QueueProto.QueueService('localhost:50052', GRPC_Global.credentials.createInsecure());
+client.CreateQueues({ count: 10 }, (err, response) => {
+  if (err) {
+    console.error('Error:', err);
+  } else {
+    console.log('Queues created:', response.queues);
+  }
+});
+
+
 
 server.bindAsync(
   PORT,

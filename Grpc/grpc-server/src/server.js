@@ -153,6 +153,14 @@ serverService.SendDataUserProfile(requestData, (error, response) => {
     console.log("Response from SendDataUserProfile:", response.message);
   }
 });
+
+serverService.CreateQueues({ count: 10 }, (err, response) => {
+  if (err) {
+    console.error('Error calling CreateQueues:', err);
+    return;
+  }
+  console.log('Queues created:', response.queues);
+});
 console.log("running server");
 
 // SERVER LISTENING SERVER 1
