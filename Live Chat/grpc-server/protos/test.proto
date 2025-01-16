@@ -1,19 +1,21 @@
 syntax = "proto3";
 
-package queue; // Defines the package
+package order;
 
 // Service definition
-service QueueService {
-  // RPC to create multiple queues
-  rpc CreateQueues (QueueRequest) returns (QueueResponse);
+service OrderService {
+  rpc ProcessOrder (OrderRequest) returns (OrderResponse);
 }
 
-// Message for queue creation request
-message QueueRequest {
-  int32 count = 1; // Number of queues to create
+// Request message
+message OrderRequest {
+  string order_id = 1;  // Order ID
 }
 
-// Message for queue creation response
-message QueueResponse {
-  repeated string queues = 1; // List of created queue names
+// Response message
+message OrderResponse {
+  string order_id = 1;          // Order ID
+  string status = 2;            // Order status (e.g., "success", "rejected", "delayed")
+  int32 delay_seconds = 3;      // Delay time in seconds (if delayed)
+  string message = 4;           // Additional information
 }

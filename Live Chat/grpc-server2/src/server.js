@@ -30,7 +30,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 
 // console.log("packageDefinition",packageDefinition)
 // 
-const protoQueue = grpc.loadPackageDefinition(packageDefinition).queue;
+const protoQueue = grpc.loadPackageDefinition(packageDefinition).order;
 // const userServices = grpc.loadPackageDefinition(packageDefinition).user_details_proto;
 
 
@@ -63,6 +63,40 @@ async function createQueues(call, callback) {
     callback(error, null);
   }
 }
+function processOrder(call, callback) {
+  const orderId = call.request.order_id;
+
+  // Randomly determine the outcome
+  const outcome = Math.random();
+  if (outcome < 0.7) {
+    // 70% chance of success
+    callback(null, {
+      order_id: orderId,
+      status: 'success',
+      delay_seconds: 0,
+      message: 'Order processed successfully.',
+    });
+  } else if (outcome < 0.9) {
+    // 20% chance of delay
+    const delaySeconds = Math.floor(Math.random() * 10) + 1; // Random delay between 1-10 seconds
+    setTimeout(() => {
+      callback(null, {
+        order_id: orderId,
+        status: 'delayed',
+        delay_seconds: delaySeconds,
+        message: `Order delayed by ${delaySeconds} seconds.`,
+      });
+    }, delaySeconds * 1000); // Simulate delay
+  } else {
+    // 10% chance of rejection
+    callback(null, {
+      order_id: orderId,
+      status: 'rejected',
+      delay_seconds: 0,
+      message: 'Order rejected due to insufficient stock.',
+    });
+  }
+}
 
 console.log('================================================ ');
 // console.log('ServiceName', userServices.UserRPCService.serviceName);
@@ -85,7 +119,7 @@ const server = new grpc.Server();
 // });
 
 // console.log("proto.QueueService.service,",protoQueue)
-server.addService(protoQueue.QueueService.service, { CreateQueues: createQueues });
+server.addService(protoQueue.OrderService.service, { ProcessOrder: processOrder });
 server.bindAsync(
   PORT,
   grpc.ServerCredentials.createInsecure(),

@@ -44,15 +44,37 @@ server.addService(chatProto.ChatService.service, {
   },
 });
 
-const client = new QueueProto.QueueService('localhost:50052', GRPC_Global.credentials.createInsecure());
-client.CreateQueues({ count: 10 }, (err, response) => {
-  if (err) {
-    console.error('Error:', err);
-  } else {
-    console.log('Queues created:', response.queues);
-  }
-});
+// const client = new QueueProto.QueueService('localhost:50052', GRPC_Global.credentials.createInsecure());
+const client = new QueueProto.OrderService('localhost:50052', GRPC_Global.credentials.createInsecure());
+// client.CreateQueues({ count: 10 }, (err, response) => {
+//   if (err) {
+//     console.error('Error:', err);
+//   } else {
+//     console.log('Queues created:', response.queues);
+//   }
+// });
 
+function simulateOrder(orderId) {
+  console.log(orderId);
+  client.ProcessOrder({ order_id: orderId }, (err, response) => {
+    if (err) {
+      console.error('Error:', err);
+      return;
+    }
+    console.log(`Order ID: ${response.order_id}`);
+    console.log(`Status: ${response.status}`);
+    if (response.status === 'delayed') {
+      console.log(`Delay: ${response.delay_seconds} seconds`);
+    }
+    console.log(`Message: ${response.message}`);
+    console.log('---');
+  });
+}
+
+// Test with multiple orders
+for (let i = 1; i <= 10; i++) {
+  simulateOrder(`order_${i}`);
+}
 
 
 server.bindAsync(
