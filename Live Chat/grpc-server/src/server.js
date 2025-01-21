@@ -44,6 +44,8 @@ server.addService(chatProto.ChatService.service, {
   },
 });
 
+// console.log("QueueProto",QueueProto.OrderService);
+
 // const client = new QueueProto.QueueService('localhost:50052', GRPC_Global.credentials.createInsecure());
 const client = new QueueProto.OrderService('localhost:50052', GRPC_Global.credentials.createInsecure());
 // client.CreateQueues({ count: 10 }, (err, response) => {
@@ -54,26 +56,77 @@ const client = new QueueProto.OrderService('localhost:50052', GRPC_Global.creden
 //   }
 // });
 
+// async function createQueues(call, callback) {
+//   const queueCount = call.request.count || 10; // Default to 10 queues
+//   const queueNames = [];
+
+//   try {
+//     // Connect to RabbitMQ
+//     const connection = await amqp.connect(RABBITMQ_URL);
+//     const channel = await connection.createChannel();
+
+//     // Create queues
+//     for (let i = 1; i <= queueCount; i++) {
+//       const queueName = `test_queue_${i}`;
+//       await channel.assertQueue(queueName);
+//       queueNames.push(queueName);
+//     }
+
+//     // Close connection
+//     await channel.close();
+//     await connection.close();
+
+//     callback(null, { queues: queueNames });
+//   } catch (error) {
+//     console.error('Error creating queues:', error);
+//     callback(error, null);
+//   }
+// }
+
 function simulateOrder(orderId) {
   console.log(orderId);
-  client.ProcessOrder({ order_id: orderId }, (err, response) => {
+  const order = {
+    orderId: orderId,
+    order_Ids:`${orderId}-${orderId}`
+  }
+  client.PlaceOrder(order, (err, response) => {
     if (err) {
       console.error('Error:', err);
       return;
     }
-    console.log(`Order ID: ${response.order_id}`);
+    console.log("response:", response);
+    console.log(`Order ID: ${response.orderId}`);
     console.log(`Status: ${response.status}`);
     if (response.status === 'delayed') {
-      console.log(`Delay: ${response.delay_seconds} seconds`);
+      console.log(`Delay: ${response.delaySeconds} seconds`);
     }
     console.log(`Message: ${response.message}`);
     console.log('---');
   });
 }
 
+function getHistory (order_id) {
+  const data = {
+    orderId:order_id
+  }
+  client.GetOrderHistory(data, (err,res) => {
+    if (err) {
+      console.error('Error:', err);
+      return;
+    }
+    const response = (res)
+    if(response?.status){
+      console.log("rsponse status: ", response.status);
+      console.log(response.orders)
+    }
+  })
+}
+
 // Test with multiple orders
 for (let i = 1; i <= 10; i++) {
   simulateOrder(`order_${i}`);
+  // getHistory(`order_${i}`);
+  
 }
 
 

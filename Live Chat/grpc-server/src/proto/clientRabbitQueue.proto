@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package order;
+
+service OrderService {
+  rpc PlaceOrder (OrderRequest) returns (OrderResponse);
+  rpc GetOrderStatus (OrderStatusRequest) returns (OrderStatusResponse);
+  rpc GetOrderHistory (OrderHistoryRequest) returns (OrderhistoryResponse);
+}
+
+message OrderRequest {
+  string order_id = 1;
+  string user_id = 2;
+  string product_id = 3;
+  int32 quantity = 4;
+}
+
+message OrderResponse {
+  string order_id = 1;
+  string status = 2;  // e.g., "pending"
+  string message = 3; // e.g., "Order received"
+}
+
+message OrderStatusRequest {
+  string order_id = 1;
+}
+message OrderHistoryRequest {
+  string orderId = 1;
+  string status = 2;
+}
+
+message OrderStatusResponse {
+  string order_id = 1;
+  string status = 2;  // e.g., "approved", "rejected"
+  string seller_message = 3;
+}
+message OrdersType {
+  int32 id = 1;
+  string order_id = 2;
+  string status = 3;
+}
+
+message OrderhistoryResponse {
+  repeated OrdersType orders = 1;
+  bool status = 2; 
+  // string seller_message = 3;
+}
