@@ -1,5 +1,5 @@
 const { GRPC_Global } = require("./config/grpc.config");
-const { chatProto , QueueProto} = require("./services/chat.service");
+const { chatProto , QueueProto, TestProto} = require("./services/chat.service");
 
 const PORT = "0.0.0.0:50051";
 const server = new GRPC_Global.Server();
@@ -47,7 +47,8 @@ server.addService(chatProto.ChatService.service, {
 // console.log("QueueProto",QueueProto.OrderService);
 
 // const client = new QueueProto.QueueService('localhost:50052', GRPC_Global.credentials.createInsecure());
-const client = new QueueProto.OrderService('localhost:50052', GRPC_Global.credentials.createInsecure());
+// const client = new QueueProto.OrderService('localhost:50052', GRPC_Global.credentials.createInsecure());
+const clientTest = new TestProto.TestService('localhost:50052', GRPC_Global.credentials.createInsecure());
 // client.CreateQueues({ count: 10 }, (err, response) => {
 //   if (err) {
 //     console.error('Error:', err);
@@ -105,6 +106,16 @@ function simulateOrder(orderId) {
   });
 }
 
+function sayHello () {
+  clientTest.SayHello("hello",(err, response) => {
+    if(err){
+      console.log('err',err)
+    }else{
+      console.log('response: ' + response)
+    }
+  });
+}
+
 function getHistory (order_id) {
   const data = {
     orderId:order_id
@@ -124,7 +135,8 @@ function getHistory (order_id) {
 
 // Test with multiple orders
 for (let i = 1; i <= 10; i++) {
-  simulateOrder(`order_${i}`);
+  sayHello()
+  // simulateOrder(`order_${i}`);
   // getHistory(`order_${i}`);
   
 }

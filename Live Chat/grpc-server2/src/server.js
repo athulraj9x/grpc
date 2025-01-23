@@ -221,6 +221,7 @@ const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const mysql = require('mysql2');
 const db = require('./db/dbConnection'); // Assuming you have this file exporting your db connection
+const createSchema = require('./db/createSchema');
 
 // Path to your .proto file
 const PROTO_PATH = __dirname + '/src/../protos/rabbit.proto';
@@ -289,6 +290,7 @@ const orderService = {
 // Function to check if any records exist in the 'orders' table
 async function checkIfDataExists() {
   try {
+    createSchema().then(response => console.log(response));
     const [rows] = await dbPromise.query('SELECT COUNT(*) AS count FROM orders');
     if (rows[0].count > 0) {
       console.log('There are records in the orders table.');

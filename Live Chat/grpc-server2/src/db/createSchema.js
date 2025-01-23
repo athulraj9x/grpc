@@ -88,7 +88,7 @@ async function createSchema() {
         };
 
         // Add missing columns
-        addColumnIfMissing("Orders", "stock", "INTEGER");
+        // addColumnIfMissing("Orders", "stock", "INTEGER");
 
         console.log("Table schema check completed!");
       });
@@ -99,7 +99,7 @@ async function createSchema() {
           return reject(`Failed to close the database: ${err.message}`);
         }
         console.log("Database connection closed.");
-        resolve();
+        resolve(true);
       });
     });
   });
