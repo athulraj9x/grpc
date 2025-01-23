@@ -8,7 +8,9 @@ const PROTO_PATH = path.join(__dirname, './protos/example.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const proto = grpc.loadPackageDefinition(packageDefinition) as any;
 
-const exampleService = proto.TestService;
+const exampleService = proto.Test_examples;
+
+// console.log("exampleService",exampleService)
 
 function sayHello(
   call: grpc.ServerUnaryCall<{ name: string }, { message: string }>,
@@ -20,7 +22,7 @@ function sayHello(
 
 // Create the gRPC server
 const server = new grpc.Server();
-server.addService(exampleService.service, { SayHello: sayHello });
+server.addService(exampleService.TestService.service, { SayHello: sayHello });
 
 server.bindAsync(
   '0.0.0.0:50052',

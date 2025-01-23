@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "src/server.ts",
-      "generate:grpc": "mkdir -p src/generated && npx grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --ts_out=src/generated --grpc_out=grpc_js:src/generated --proto_path=src/protos src/protos/*.proto"
+    "start": "nodemon src/server.ts",
+    "generate:grpc": "mkdir -p src/generated && npx grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --ts_out=src/generated --grpc_out=grpc_js:src/generated --proto_path=src/protos src/protos/*.proto"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +13,8 @@
   "description": "",
   "dependencies": {
     "@grpc/grpc-js": "^1.12.5",
-    "@grpc/proto-loader": "^0.7.13"
+    "@grpc/proto-loader": "^0.7.13",
+    "nodemon": "^3.1.9"
   },
   "devDependencies": {
     "@protobuf-ts/plugin": "^2.9.4",

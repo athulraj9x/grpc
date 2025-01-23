@@ -109,9 +109,9 @@ function simulateOrder(orderId) {
 function sayHello () {
   clientTest.SayHello("hello",(err, response) => {
     if(err){
-      console.log('err',err)
+      console.log('err-----',err)
     }else{
-      console.log('response: ' + response)
+      console.log('response: ', response)
     }
   });
 }
